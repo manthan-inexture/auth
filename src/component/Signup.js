@@ -2,6 +2,8 @@ import React from 'react'
 import { useNavigate, Link } from "react-router-dom";
 import { Formik, Form, Field  } from 'formik';
 import * as Yup from 'yup';
+import { auth } from "../config/firebase_config"
+import {  createUserWithEmailAndPassword } from "firebase/auth";
 const Signup = () => {
 
   let navigate = useNavigate();
@@ -14,6 +16,7 @@ const Signup = () => {
     state: Yup.string().required("Sate is required"),
     city: Yup.string().required("city is required"),
   });
+
   return (
     <div>
       <h1 className='text-center'>Signup</h1>
@@ -31,8 +34,19 @@ const Signup = () => {
             }}
             validationSchema={SignupSchema}
             onSubmit={values => {
-              console.log(values);
               localStorage.setItem("user", btoa(JSON.stringify(values)));
+              createUserWithEmailAndPassword(auth, values.email, values.password)
+                .then((userCredential) => {
+                  alert("signup successful");
+                  const user = userCredential.user;
+                  // ...
+                })
+                .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  console.log(errorCode);
+                  console.log(errorMessage);
+                });
               navigate("/signin")
             }}
           >
@@ -47,11 +61,11 @@ const Signup = () => {
                   <div id="emailHelp" className="form-text text-danger">{errors.username}</div>
                 </div>
                 <div className="mb-3">
-                  <Field name="password" placeholder="Password" className="form-control"  />
+                  <Field name="password" type="password" placeholder="Password" className="form-control"  />
                   <div id="emailHelp" className="form-text text-danger">{errors.password}</div>
                 </div>
                 <div className="mb-3">
-                  <Field name="cpassword" placeholder="Confirm password" className="form-control"  />
+                  <Field name="cpassword" type="password" placeholder="Confirm password" className="form-control"  />
                   <div id="emailHelp" className="form-text text-danger">{errors.cpassword}</div>
                 </div>
                 <div className="mb-3">
@@ -73,7 +87,7 @@ const Signup = () => {
           <div className='text-primary text-end'><Link to="/signin" >Already Sign-up Login here ...</Link></div>
         </div>
       </div>
-
+ 
     </div>
   )
 }

@@ -11,7 +11,7 @@ const Header = (props) => {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">Routing Demo</a>
+          <a className="navbar-brand">Routing Demo</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -63,7 +63,6 @@ const Header = (props) => {
               props.islogin &&
               <button className="btn btn-outline-success" onClick={setlogout} type="submit">Logout</button>
             }
-
           </div>
         </div>
       </nav>
